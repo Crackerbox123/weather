@@ -16,6 +16,14 @@ body {
 
 
 /* column layout utilities */
+.left-content {
+  width: 25%;
+  justify-content: center;
+  border-right-style: solid;
+  border-bottom-style: solid;
+
+}
+
 
 /* HEIGHT / WIDTH UTILS */
 .min-100-vh {

@@ -13,15 +13,17 @@
     <header>
         <h2>Weather Dashboard</h2>
     </header>
-    <main class="flex-row">
+    <main class="flex-row justify-space-between">
 
-        <div class="left-aside">    
-            <h3>Search for a City</h3>  
-            <form id="search-form" class="left-content">
-                <label class="form-label" for="search">City Search</label>
-                <input name="search" id="search" class="form-input">
-                <button type="submit" class="btn">Search</button>
-            </form>
+        <div class="left-content flex-row align-stretch">    
+            <div>
+                <h3>Search for a City</h3>  
+                <form id="search-form">
+                    <label class="form-label" for="search">City Search</label>
+                    <input name="search" id="search" class="form-input">
+                    <button type="submit" class="btn">Search</button>
+                </form>
+            </div>
         </div>  
         <div class="current-card"></div>    
         <div class="forecast-card"></div>
