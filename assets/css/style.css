@@ -25,7 +25,7 @@ header {
     text-align: center;
 }
 
-aside {
+.left-content {
     padding: 10px 20px;
 }
 
@@ -85,33 +85,11 @@ button {
     color: white;
 }
 
+li {
+    list-style: none;
+    text-align: center;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+}
 
 /* Grid layout */
 header {

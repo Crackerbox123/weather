@@ -37,7 +37,7 @@ var formSubmitHandler = function(event) {
 // function to get location data
 var getLocationData = function(location) {
     // apiurl, with location parameter from fromSubmitHandler
-    var apiUrl = "http://api.openweathermap.org/geo/1.0/direct?q=" + location + "&appid=c7c0c5deb67324c42122e65149bc7cda";
+    var apiUrl = "http://api.openweathermap.org/geo/1.0/direct?q=" + location + "&appid=d9f0ca209f99893d29e491160007c2ec";
     fetch(apiUrl).then(function(response){
     response.json().then(function(data) {
        console.log(data);
@@ -47,7 +47,6 @@ var getLocationData = function(location) {
        // // long variable set
        // console.log(data[0].lon);
         var longitude = data[0].lon; 
-          
         // lat + lon params sent to getWeather function4
         getWeather(latitude, longitude)
     });
@@ -55,7 +54,7 @@ var getLocationData = function(location) {
 };
 
 var getWeather = function(latitude, longitude) {
-    var apiUrl = "https://api.openweathermap.org/data/2.5/onecall?lat=" + latitude + "&lon=" + longitude + "&units=imperial&appid=c7c0c5deb67324c42122e65149bc7cda"
+    var apiUrl = "https://api.openweathermap.org/data/2.5/onecall?lat=" + latitude + "&lon=" + longitude + "&units=imperial&appid=5ec06a85d91a8ddfcddedf8b23f71f7e"
     fetch(apiUrl).then(function(response){
         response.json().then(function(data) {
             // captures response data, names it, and sends to dispalyWeather function as a parameter
@@ -84,17 +83,19 @@ var displayWeather = function(weather) {
     displayForecast(weather);
 
     // jquery to send searchterm to geolocation api function
-
-    $(document).on("click", ".list-group-item", function() {
+    $(document).one("click", ".list-group-item", function() {
         var listCity = $(this).text();
-        getLocationData(listCity);
+        if (getLocationData(listCity)) {
+            $.removeData(listCity);
+            return;
+        };
     });
 }
 
 
 var displayForecast = function(weather) {
-    // jquery to clear forecast
 
+    // jquery to clear forecast
     $("#forecast-container").empty();
     // console.log(weather)
 
@@ -112,7 +113,7 @@ var displayForecast = function(weather) {
         // create h2 for Date
         // increments date and converts toDateString
         var date = new Date();
-        date.setDate(date.getDate() + i);
+        date.setDate(date.getDate() + 1);
         var forecastDate = document.createElement("h3");
         forecastDate.classList = "card-content";
         forecastDate.textContent = date.toDateString();
@@ -140,7 +141,6 @@ var displayForecast = function(weather) {
 }
 
 
-// jquery function to interact with search history list items
 
 
 
