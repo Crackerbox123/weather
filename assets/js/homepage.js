@@ -8,6 +8,7 @@ var humidCurrent = document.querySelector("#humidity");
 var uvCurrent = document.querySelector("#uv");
 var cardContainer = document.querySelector("#forecast-container");
 
+
 // Geolocation API
 // get input data from the submit form, saves as location, sends to getLocationData
 var formSubmitHandler = function(event) {
@@ -33,12 +34,9 @@ var getLocationData = function(location) {
         var latitude = data[0].lat;
         // long variable set
         console.log(data[0].lon);
-        var longitude = data[0].lon;
-
-
+        var longitude = data[0].lon;     
         // lat + lon params sent to getWeather function4
         getWeather(latitude, longitude)
-
     });
 });
 };
@@ -50,6 +48,7 @@ var getWeather = function(latitude, longitude) {
             // captures response data, names it, and sends to dispalyWeather function as a parameter
             var weather = data;
             displayWeather(weather);
+            console.log(weather)
         });
     });
 };
@@ -58,9 +57,11 @@ var getWeather = function(latitude, longitude) {
 // display weather to current section
 var displayWeather = function(weather) {
 
-    // console.log(weather);
-     //console.log(weather.current.temp);
-    tempCurrent.textContent = weather.current.temp;
+    //console.log(weather);
+    // dateHeader.textContent = location;
+
+    //console.log(weather.current.temp);
+    tempCurrent.textContent = weather.current.temp + " °F";
     //console.log(weather.current.wind_speed);
     windCurrent.textContent = weather.current.wind_speed + " MPH";
     //console.log(weather.current.humidity);
@@ -75,21 +76,54 @@ var displayForecast = function(weather) {
     console.log(weather)
 
     // loop over daily array
-    for (var i = 0; i < 5; i++) {
+    // starts at 1 to have forecast start at tomorrow
+    for (var i = 1; i < 6; i++) {
 
         // create div for card
         var forecastCard = document.createElement("div")
         forecastCard.classList = "forecast-cards"
 
+
+
+         // Insert icon and append to card
+        var forecastIcon = document.createElement("span");
+        var img = new Image();
+        img.src = 'http://openweathermap.org/img/wn/' + weather.daily[i].weather[0].icon + '@2x.png' ;
+
+
+
+        // create h2 for Date
+        // increments date and converts toDateString
+        var date = new Date();
+        date.setDate(date.getDate() + i);
+        var forecastDate = document.createElement("h3");
+        forecastDate.classList = "card-content";
+        forecastDate.textContent = date.toDateString();
+
         // create span for temp
 
         var forecastTemp = document.createElement("span")
-        forecastTemp.textContent = weather.daily[i].temp.max;
+        forecastTemp.classList = "card-content";
+        forecastTemp.textContent = "Temp: " + weather.daily[i].temp.max + " °F";
+
+        // span for wind
+        var forecastWind = document.createElement("span")
+        forecastWind.classList = "card-content";
+        forecastWind.textContent = "Wind: " + weather.daily[i].wind_speed + " MPH";
+
+        // span for humidity
+
+        var forecastHumid = document.createElement("span")
+        forecastHumid.classList = "card-content";
+        forecastHumid.textContent = "Humidity: " + weather.daily[i].humidity + " %";
 
         // append
-
+        forecastIcon.appendChild(img);
+        forecastCard.appendChild(forecastDate);
+        forecastCard.appendChild(forecastIcon);
         forecastCard.appendChild(forecastTemp);
-
+        forecastCard.appendChild(forecastWind);
+        forecastCard.appendChild(forecastHumid);
         cardContainer.appendChild(forecastCard);
     }
 }
@@ -97,4 +131,3 @@ var displayForecast = function(weather) {
 
 
 userFormEl.addEventListener("submit", formSubmitHandler);
-// getLocationData();
