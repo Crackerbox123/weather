@@ -28,9 +28,10 @@ var formSubmitHandler = function(event) {
             `);
         $("#searchHistory").append(searchedCity);
     };
-    
     localStorage.setItem("city", JSON.stringify(searchHistoryList));
-    console.log(searchHistoryList);
+        
+
+    //console.log(searchHistoryList);
 }
 
 // function to get location data
@@ -39,17 +40,16 @@ var getLocationData = function(location) {
     var apiUrl = "http://api.openweathermap.org/geo/1.0/direct?q=" + location + "&appid=c7c0c5deb67324c42122e65149bc7cda";
     fetch(apiUrl).then(function(response){
     response.json().then(function(data) {
-        console.log(data);
-        // latitude variable set
-        console.log(data[0].lat);
+       console.log(data);
+       //// latitude variable set
+       //console.log(data[0].lat);
         var latitude = data[0].lat;
-        // long variable set
-        console.log(data[0].lon);
+       // // long variable set
+       // console.log(data[0].lon);
         var longitude = data[0].lon; 
           
         // lat + lon params sent to getWeather function4
         getWeather(latitude, longitude)
-
     });
 });
 };
@@ -61,7 +61,7 @@ var getWeather = function(latitude, longitude) {
             // captures response data, names it, and sends to dispalyWeather function as a parameter
             var weather = data;
             displayWeather(weather);
-            console.log(weather)
+            //console.log(weather)
         });
     });
 };
@@ -69,8 +69,8 @@ var getWeather = function(latitude, longitude) {
 
 // display weather to current section
 var displayWeather = function(weather) {
-
     //console.log(weather);
+
     // dateHeader.textContent = location;
 
     //console.log(weather.current.temp);
@@ -83,6 +83,8 @@ var displayWeather = function(weather) {
     uvCurrent.textContent = weather.current.uvi;
     displayForecast(weather);
 
+    // jquery to send searchterm to geolocation api function
+
     $(document).on("click", ".list-group-item", function() {
         var listCity = $(this).text();
         getLocationData(listCity);
@@ -91,7 +93,10 @@ var displayWeather = function(weather) {
 
 
 var displayForecast = function(weather) {
-    console.log(weather)
+    // jquery to clear forecast
+
+    $("#forecast-container").empty();
+    // console.log(weather)
 
     // loop over daily array
     // starts at 1 to have forecast start at tomorrow
@@ -100,16 +105,10 @@ var displayForecast = function(weather) {
         // create div for card
         var forecastCard = document.createElement("div")
         forecastCard.classList = "forecast-cards"
-
-
-
          // Insert icon and append to card
         var forecastIcon = document.createElement("span");
         var img = new Image();
         img.src = 'http://openweathermap.org/img/wn/' + weather.daily[i].weather[0].icon + '@2x.png' ;
-
-
-
         // create h2 for Date
         // increments date and converts toDateString
         var date = new Date();
@@ -117,24 +116,18 @@ var displayForecast = function(weather) {
         var forecastDate = document.createElement("h3");
         forecastDate.classList = "card-content";
         forecastDate.textContent = date.toDateString();
-
         // create span for temp
-
         var forecastTemp = document.createElement("span")
         forecastTemp.classList = "card-content";
         forecastTemp.textContent = "Temp: " + weather.daily[i].temp.max + " °F";
-
         // span for wind
         var forecastWind = document.createElement("span")
         forecastWind.classList = "card-content";
         forecastWind.textContent = "Wind: " + weather.daily[i].wind_speed + " MPH";
-
         // span for humidity
-
         var forecastHumid = document.createElement("span")
         forecastHumid.classList = "card-content";
         forecastHumid.textContent = "Humidity: " + weather.daily[i].humidity + " %";
-
         // append
         forecastIcon.appendChild(img);
         forecastCard.appendChild(forecastDate);
