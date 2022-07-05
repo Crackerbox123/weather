@@ -35,6 +35,10 @@ aside {
     border-bottom: 3px solid gray;
     padding-bottom: 20px;
     margin-bottom: 20px;
+    display: flex;
+}
+#forecast-container {
+    display: flex;
 }
 
 form>* {
@@ -45,6 +49,16 @@ form>* {
     padding: 5px;
     border-radius: .5em;
     margin: 5px;
+}
+
+.forecast-cards {
+    width: 200px;
+    height: 300px;
+    background-color: darkolivegreen;
+    color: white;
+    padding: 5px;
+    justify-content: space-around;
+    margin: 10px;
 }
 
 

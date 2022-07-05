@@ -1,3 +1,4 @@
+
 var userFormEl = document.querySelector("#search-form");
 var searchInputEl = document.querySelector("#search");
 var dateHeader = document.querySelector("#date");
@@ -5,6 +6,7 @@ var tempCurrent = document.querySelector("#temp");
 var windCurrent = document.querySelector("#wind");
 var humidCurrent = document.querySelector("#humidity");
 var uvCurrent = document.querySelector("#uv");
+var cardContainer = document.querySelector("#forecast-container");
 
 // Geolocation API
 // get input data from the submit form, saves as location, sends to getLocationData
@@ -35,8 +37,8 @@ var getLocationData = function(location) {
 
 
         // lat + lon params sent to getWeather function4
-
         getWeather(latitude, longitude)
+
     });
 });
 };
@@ -52,20 +54,46 @@ var getWeather = function(latitude, longitude) {
     });
 };
 
+
+// display weather to current section
 var displayWeather = function(weather) {
 
-    console.log(weather);
+    // console.log(weather);
+     //console.log(weather.current.temp);
     tempCurrent.textContent = weather.current.temp;
-    console.log(weather.current.temp);
-    console.log(weather.current.wind_speed);
-    console.log(weather.current.humidity);
-    console.log(weather.current.uvi);
+    //console.log(weather.current.wind_speed);
+    windCurrent.textContent = weather.current.wind_speed + " MPH";
+    //console.log(weather.current.humidity);
+    humidCurrent.textContent = weather.current.humidity + "%";
+    //console.log(weather.current.uvi);
+    uvCurrent.textContent = weather.current.uvi;
+    displayForecast(weather);
 }
 
 
+var displayForecast = function(weather) {
+    console.log(weather)
 
+    // loop over daily array
+    for (var i = 0; i < 5; i++) {
 
-// 
+        // create div for card
+        var forecastCard = document.createElement("div")
+        forecastCard.classList = "forecast-cards"
+
+        // create span for temp
+
+        var forecastTemp = document.createElement("span")
+        forecastTemp.textContent = weather.daily[i].temp.max;
+
+        // append
+
+        forecastCard.appendChild(forecastTemp);
+
+        cardContainer.appendChild(forecastCard);
+    }
+}
+
 
 
 userFormEl.addEventListener("submit", formSubmitHandler);
