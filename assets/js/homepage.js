@@ -7,6 +7,7 @@ var windCurrent = document.querySelector("#wind");
 var humidCurrent = document.querySelector("#humidity");
 var uvCurrent = document.querySelector("#uv");
 var cardContainer = document.querySelector("#forecast-container");
+var searchHistoryList = [];
 
 
 // Geolocation API
@@ -20,6 +21,16 @@ var formSubmitHandler = function(event) {
     } else {
         alert("Please enter a valid location")
     }
+    if (!searchHistoryList.includes(location)) {
+        searchHistoryList.push(location);
+        var searchedCity = $(`
+            <li class="list-group-item">${location}</li>
+            `);
+        $("#searchHistory").append(searchedCity);
+    };
+    
+    localStorage.setItem("city", JSON.stringify(searchHistoryList));
+    console.log(searchHistoryList);
 }
 
 // function to get location data
@@ -34,9 +45,11 @@ var getLocationData = function(location) {
         var latitude = data[0].lat;
         // long variable set
         console.log(data[0].lon);
-        var longitude = data[0].lon;     
+        var longitude = data[0].lon; 
+          
         // lat + lon params sent to getWeather function4
         getWeather(latitude, longitude)
+
     });
 });
 };
@@ -69,6 +82,11 @@ var displayWeather = function(weather) {
     //console.log(weather.current.uvi);
     uvCurrent.textContent = weather.current.uvi;
     displayForecast(weather);
+
+    $(document).on("click", ".list-group-item", function() {
+        var listCity = $(this).text();
+        getLocationData(listCity);
+    });
 }
 
 
@@ -127,6 +145,10 @@ var displayForecast = function(weather) {
         cardContainer.appendChild(forecastCard);
     }
 }
+
+
+// jquery function to interact with search history list items
+
 
 
 
