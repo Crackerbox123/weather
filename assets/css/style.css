@@ -67,7 +67,6 @@ form>* {
     margin: 5px;
     display: block;
     align-items: center;
-  
 }
 
 .card-content {
@@ -80,15 +79,18 @@ img {
     width: 75px;
 }
 
-button {
+.btn {
     background-color: darkolivegreen;
     color: white;
+    border-radius: .5em;
 }
 
 li {
     list-style: none;
     text-align: center;
-
+    width: 100%;
+    max-width: 500px;
+    margin: 10px;
 }
 
 /* Grid layout */

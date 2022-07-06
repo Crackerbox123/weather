@@ -24,7 +24,7 @@ var formSubmitHandler = function(event) {
     if (!searchHistoryList.includes(location)) {
         searchHistoryList.push(location);
         var searchedCity = $(`
-            <li class="list-group-item">${location}</li>
+            <li class="list-group-item btn">${location}</li>
             `);
         $("#searchHistory").append(searchedCity);
     };
@@ -48,18 +48,18 @@ var getLocationData = function(location) {
        // console.log(data[0].lon);
         var longitude = data[0].lon; 
         // lat + lon params sent to getWeather function4
-        getWeather(latitude, longitude)
+        getWeather(latitude, longitude, location)
     });
 });
 };
 
-var getWeather = function(latitude, longitude) {
+var getWeather = function(latitude, longitude, location) {
     var apiUrl = "https://api.openweathermap.org/data/2.5/onecall?lat=" + latitude + "&lon=" + longitude + "&units=imperial&appid=5ec06a85d91a8ddfcddedf8b23f71f7e"
     fetch(apiUrl).then(function(response){
         response.json().then(function(data) {
             // captures response data, names it, and sends to dispalyWeather function as a parameter
             var weather = data;
-            displayWeather(weather);
+            displayWeather(weather, location);
             //console.log(weather)
         });
     });
@@ -67,10 +67,10 @@ var getWeather = function(latitude, longitude) {
 
 
 // display weather to current section
-var displayWeather = function(weather) {
-    //console.log(weather);
+var displayWeather = function(weather, location) {
+    console.log(location);
+    dateHeader.textContent = location
 
-    // dateHeader.textContent = location;
 
     //console.log(weather.current.temp);
     tempCurrent.textContent = weather.current.temp + " °F";
