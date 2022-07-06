@@ -7,10 +7,9 @@ var windCurrent = document.querySelector("#wind");
 var humidCurrent = document.querySelector("#humidity");
 var uvCurrent = document.querySelector("#uv");
 var cardContainer = document.querySelector("#forecast-container");
-var searchHistoryList = [];
+var searchHistoryList = []; 
 
 
-// Geolocation API
 // get input data from the submit form, saves as location, sends to getLocationData
 var formSubmitHandler = function(event) {
     event.preventDefault();
@@ -29,25 +28,23 @@ var formSubmitHandler = function(event) {
         $("#searchHistory").append(searchedCity);
     };
     localStorage.setItem("city", JSON.stringify(searchHistoryList));
-        
-
-    //console.log(searchHistoryList);
 }
+
 
 // function to get location data
 var getLocationData = function(location) {
-    // apiurl, with location parameter from fromSubmitHandler
+    // Geolocation API
     var apiUrl = "http://api.openweathermap.org/geo/1.0/direct?q=" + location + "&appid=d9f0ca209f99893d29e491160007c2ec";
     fetch(apiUrl).then(function(response){
     response.json().then(function(data) {
        console.log(data);
-       //// latitude variable set
+       // latitude variable set
        //console.log(data[0].lat);
         var latitude = data[0].lat;
-       // // long variable set
+       // long variable set
        // console.log(data[0].lon);
         var longitude = data[0].lon; 
-        // lat + lon params sent to getWeather function4
+        // lat + lon params sent to getWeather function
         getWeather(latitude, longitude, location)
     });
 });
@@ -60,8 +57,15 @@ var getWeather = function(latitude, longitude, location) {
             // captures response data, names it, and sends to dispalyWeather function as a parameter
             var weather = data;
             displayWeather(weather, location);
-            //console.log(weather)
-        });
+            console.log(weather.current.uvi)
+            if (weather.current.uvi < 3) {
+                uvCurrent.classList = "uv-green";
+            } else if (weather.current.uvi < 6 && weather.current.uvi > 3) {
+                uvCurrent.classList = "uv-yellow";
+            } else {
+                uvCurrent.classList = "uv-red";
+            }
+        });         
     });
 };
 
@@ -70,8 +74,6 @@ var getWeather = function(latitude, longitude, location) {
 var displayWeather = function(weather, location) {
     console.log(location);
     dateHeader.textContent = location
-
-
     //console.log(weather.current.temp);
     tempCurrent.textContent = weather.current.temp + " °F";
     //console.log(weather.current.wind_speed);
@@ -82,7 +84,7 @@ var displayWeather = function(weather, location) {
     uvCurrent.textContent = weather.current.uvi;
     displayForecast(weather);
 
-    // jquery to send searchterm to geolocation api function
+    // send searchterm to geolocation api function
     $(document).one("click", ".list-group-item", function() {
         var listCity = $(this).text();
         if (getLocationData(listCity)) {
@@ -95,10 +97,9 @@ var displayWeather = function(weather, location) {
 
 var displayForecast = function(weather) {
 
-    // jquery to clear forecast
+    // clear forecast container
     $("#forecast-container").empty();
-    // console.log(weather)
-
+    
     // loop over daily array
     // starts at 1 to have forecast start at tomorrow
     for (var i = 1; i < 6; i++) {
@@ -109,8 +110,7 @@ var displayForecast = function(weather) {
          // Insert icon and append to card
         var forecastIcon = document.createElement("span");
         var img = new Image();
-        img.src = 'http://openweathermap.org/img/wn/' + weather.daily[i].weather[0].icon + '@2x.png' ;
-        // create h2 for Date
+        img.src = 'http://openweathermap.org/img/wn/' + weather.daily[i].weather[0].icon + '@2x.png';
         // increments date and converts toDateString
         var date = new Date();
         date.setDate(date.getDate() + 1);
@@ -139,10 +139,5 @@ var displayForecast = function(weather) {
         cardContainer.appendChild(forecastCard);
     }
 }
-
-
-
-
-
 
 userFormEl.addEventListener("submit", formSubmitHandler);
