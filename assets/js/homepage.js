@@ -34,7 +34,7 @@ var formSubmitHandler = function(event) {
 // function to get location data
 var getLocationData = function(location) {
     // Geolocation API
-    var apiUrl = "http://api.openweathermap.org/geo/1.0/direct?q=" + location + "&appid=d9f0ca209f99893d29e491160007c2ec";
+    var apiUrl = "https://api.openweathermap.org/geo/1.0/direct?q=" + location + "&appid=d9f0ca209f99893d29e491160007c2ec";
     fetch(apiUrl).then(function(response){
     response.json().then(function(data) {
        console.log(data);
@@ -110,7 +110,7 @@ var displayForecast = function(weather) {
          // Insert icon and append to card
         var forecastIcon = document.createElement("span");
         var img = new Image();
-        img.src = 'http://openweathermap.org/img/wn/' + weather.daily[i].weather[0].icon + '@2x.png';
+        img.src = 'https://openweathermap.org/img/wn/' + weather.daily[i].weather[0].icon + '@2x.png';
         // increments date and converts toDateString
         var date = new Date();
         date.setDate(date.getDate() + 1);
